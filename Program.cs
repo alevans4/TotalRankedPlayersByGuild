@@ -16,26 +16,30 @@ namespace TotalRankedPlayersByGuild
         static void Main(string[] args)
         {
             HtmlWeb htmlWeb = new HtmlWeb();
-            string url = @"http://www.worldoflogs.com/guilds/24254/rankings/players/?page={0}";
+            HtmlDocument doc;
+            HtmlNodeCollection players;
             int pagecount = 1;
+            string url = @"http://www.worldoflogs.com/guilds/24254/rankings/players/?page={0}";
 
-            HtmlDocument doc = htmlWeb.Load(String.Format(url, pagecount));
-            var players = doc.DocumentNode.SelectNodes("//tr[@class='even' or @class='odd']/td[2]/a");
-            while (players != null)
+            do
             {
-                foreach (var player in players)
-                {
-                    //Console.WriteLine(player.InnerText);
-                    AddPlayer(player.InnerText);
-                }
-                pagecount++;
                 doc = htmlWeb.Load(String.Format(url, pagecount));
                 players = doc.DocumentNode.SelectNodes("//tr[@class='even' or @class='odd']/td[2]/a");
-            }
+                if (players != null)
+                {
+                    foreach (var player in players)
+                    {
+                        AddPlayer(player.InnerText);
+                    }
+                }
+                pagecount++;
 
-            foreach (var player in rankCount.Keys)
+            } while (players != null);
+
+            var sortedList = (from entry in rankCount orderby entry.Value descending select entry);
+            foreach (var player in sortedList)
             {
-                Console.WriteLine(player + "\t" + rankCount[player]);
+                Console.WriteLine(player.Key + "\t" + player.Value);
             }
             Console.ReadLine();
 
