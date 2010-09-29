@@ -13,7 +13,7 @@ namespace TotalRankedPlayersByGuild
         [STAThread]
         static void Main(string[] args)
         {
-
+            //TODO Split the parser code out into a library WoLScraper
             IE ie = new IE("http://www.worldoflogs.com/guilds/24254/rankings/players/");
 
             var playerRankTable = ie.Table(Find.ByClass("playerRankMixed"));
