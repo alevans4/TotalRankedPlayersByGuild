@@ -14,7 +14,7 @@ namespace TotalRankedPlayersByGuild
         static void Main(string[] args)
         {
 
-            IE ie = new IE("http://www.worldoflogs.com/guilds/1228/rankings/players/");
+            IE ie = new IE("http://www.worldoflogs.com/guilds/24254/rankings/players/");
 
             var playerRankTable = ie.Table(Find.ByClass("playerRankMixed"));
             while (playerRankTable.TableRows.Count > 1)
