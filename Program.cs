@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WatiN.Core;
+using HtmlAgilityPack;
+
 
 namespace TotalRankedPlayersByGuild
 {
@@ -13,28 +15,28 @@ namespace TotalRankedPlayersByGuild
         [STAThread]
         static void Main(string[] args)
         {
-            //TODO Split the parser code out into a library WoLScraper
-            IE ie = new IE("http://www.worldoflogs.com/guilds/24254/rankings/players/");
+            HtmlWeb htmlWeb = new HtmlWeb();
+            string url = @"http://www.worldoflogs.com/guilds/24254/rankings/players/?page={0}";
+            int pagecount = 1;
 
-            var playerRankTable = ie.Table(Find.ByClass("playerRankMixed"));
-            while (playerRankTable.TableRows.Count > 1)
+            HtmlDocument doc = htmlWeb.Load(String.Format(url, pagecount));
+            var players = doc.DocumentNode.SelectNodes("//tr[@class='even' or @class='odd']/td[2]/a");
+            while (players != null)
             {
-                foreach (var curRow in playerRankTable.TableBodies[0].TableRows)
+                foreach (var player in players)
                 {
-                    if (curRow.TableCells.Count > 1)
-                    {
-                        AddPlayer(curRow.TableCells[1].Text);
-                    }
+                    //Console.WriteLine(player.InnerText);
+                    AddPlayer(player.InnerText);
                 }
-                ie.Link(Find.ByText("more")).Click();
+                pagecount++;
+                doc = htmlWeb.Load(String.Format(url, pagecount));
+                players = doc.DocumentNode.SelectNodes("//tr[@class='even' or @class='odd']/td[2]/a");
             }
-            ie.Close();
 
-            foreach (var name in rankCount.Keys)
+            foreach (var player in rankCount.Keys)
             {
-                Console.WriteLine(name + "\t" + rankCount[name]);
+                Console.WriteLine(player + "\t" + rankCount[player]);
             }
-
             Console.ReadLine();
 
         }
