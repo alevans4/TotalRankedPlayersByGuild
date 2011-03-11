@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WatiN.Core;
 using HtmlAgilityPack;
 using System.Collections;
 
@@ -31,19 +30,17 @@ namespace TotalRankedPlayersByGuild
                     foreach (var player in players)
                     {
                         //check to see if it is a current fight
-                        foreach (var encounter in encounters)
+                        string encounter = player.SelectSingleNode("td[6]").InnerText;
+                        if (encounters.Contains(encounter))
                         {
-                            if (player.InnerText.Contains(encounter))
-                            {
                                 AddPlayer(player.SelectSingleNode("td[2]/a").InnerText);
 
                                 List<string> listing = new List<string>();
                                 listing.Add(player.SelectSingleNode("td[2]/a").InnerText.PadRight(20));
-                                listing.Add(player.SelectSingleNode("td[6]").InnerText.PadRight(30));
+                                listing.Add(encounter.PadRight(30));
                                 listing.Add(player.SelectSingleNode("td[8]").InnerText);
                                 listing.Add(player.SelectSingleNode("td[1]/a/span").InnerText);
                                 Console.WriteLine(string.Join("\t", listing.ToArray()));
-                            }
                         }
                     }
                 }
