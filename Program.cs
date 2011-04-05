@@ -19,7 +19,7 @@ namespace TotalRankedPlayersByGuild
             HtmlDocument doc;
             HtmlNodeCollection players;
             int pagecount = 1;
-            string url = @"http://www.worldoflogs.com/guilds/1240/rankings/players/?page={0}";
+            string url = @"http://www.worldoflogs.com/guilds/1240/rankings/players/?page={0}"; //test comment comment
             List<string> encounters = new List<string>() { "Magmaw", "Conclave of Wind", "Chimaeron", "Cho&#39;gall", "Maloriak", "Argaloth", "Valiona &amp; Theralion", "Omnotron Defense System", "Halfus Wyrmbreaker", "Nefarian", "Atramedes", "Al'Akir", "Twilight Ascendant Council" };
             do
             {
